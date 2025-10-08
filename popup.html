@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Prompt Filler</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 450px;
+      min-height: 580px; /* تم زيادة الطول لاستيعاب القائمة */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: #667eea;
+      font-size: 22px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .template-section {
+      margin-bottom: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      font-size: 14px;
+      direction: rtl;
+    }
+
+    .buttons-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .save-group {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    #templateName {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      direction: rtl;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #fillBtn {
+      flex-grow: 3;
+      background-color: #667eea;
+      color: white;
+    }
+    
+    .save-btn {
+      background-color: #48bb78;
+      color: white;
+    }
+
+    #resetBtn {
+      flex-grow: 1;
+      background-color: #f56565;
+      color: white;
+    }
+    
+    button:hover {
+      opacity: 0.9;
+    }
+    
+    /* قائمة القوالب المحفوظة */
+    .template-list-section {
+        margin-top: 20px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+    
+    .template-list-section h3 {
+        font-size: 16px;
+        color: #4a5568;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+    
+    #templatesList {
+        list-style: none;
+        padding: 0;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        background: #f7fafc;
+    }
+    
+    #templatesList li {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #e2e8f0;
+        transition: background-color 0.2s;
+        font-size: 14px;
+        color: #2d3748;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    #templatesList li:last-child {
+        border-bottom: none;
+    }
+    
+    #templatesList li:hover {
+        background-color: #e6fffa;
+        color: #2c5282;
+    }
+    
+    .delete-btn {
+        background: none;
+        border: none;
+        color: #e53e3e;
+        font-size: 16px;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .status.success {
+      background-color: #c6f6d5;
+      color: #22543d;
+    }
+
+    .status.error {
+      background-color: #fed7d7;
+      color: #742a2a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 Smart Prompt Filler</h1>
+    
+    <div class="template-section">
+      <textarea id="template" placeholder="اكتب قالبك هنا أو حمل قالباً محفوظاً" dir="rtl"></textarea>
+      
+      <div class="buttons-group">
+        <button id="fillBtn">🚀 ملء تلقائي الآن (Ctrl+Enter)</button>
+        <button id="resetBtn">🗑️ استعادة الافتراضي</button>
+      </div>
+
+    </div>
+    
+    <div class="save-group">
+        <input type="text" id="templateName" placeholder="أدخل اسم القالب (مثال: تحليل SWOT)" required>
+        <button id="saveBtn" class="save-btn">💾 حفظ كقالب جديد</button>
+    </div>
+    
+    <div class="status" id="status"></div>
+
+    <div class="template-list-section">
+        <h3>قوالبك المحفوظة:</h3>
+        <ul id="templatesList">
+            <li>لا توجد قوالب محفوظة حالياً.</li>
+        </ul>
+    </div>
+    
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
